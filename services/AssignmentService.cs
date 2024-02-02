@@ -14,12 +14,21 @@ namespace Canvas.Services {
         }
 
         private IList<Assignment> assignments;
+        private IList<Submission> submissions;
 
         public IEnumerable<Assignment> Assignments
         {
             get
             {
                 return assignments;
+            }
+        }
+
+        public IEnumerable<Submission> Submissions
+        {
+            get
+            {
+                return submissions;
             }
         }
 
@@ -34,6 +43,11 @@ namespace Canvas.Services {
         public void Add(Assignment assignment)
         {
             assignments.Add(assignment);
+        }
+
+        public void Delete(Assignment assignmentToDelete)
+        {
+            assignments.Remove(assignmentToDelete);
         }
     }
 }

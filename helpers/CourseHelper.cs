@@ -4,7 +4,7 @@ using Canvas.Services;
 namespace Canvas.helpers {
     public class CourseHelper {
         private CourseService courseSvc = CourseService.Current;
-        
+
         public void NewCourse() 
         {
             Console.WriteLine("Course Name:");
@@ -26,26 +26,22 @@ namespace Canvas.helpers {
                 myCourse = new Course{Name = name, Code = code, Description = description}; 
             }
 
-            Console.WriteLine("Course created successfully!");
+            Console.WriteLine("Course created successfully!\n");
             courseSvc.Add(myCourse);
             PrintCourse(myCourse);
+            Console.WriteLine();
         }
 
         public void UpdateCourse() 
         {
-            Console.WriteLine("Choose Course to Update:");
-            PrintCourseList();
-            
-            var choice = Console.ReadLine();
-
-            if(int.TryParse(choice, out int intChoice)) {
-                var courseToUpdate = CourseService.Current.Courses.ElementAt(intChoice - 1);
-                
+            Course course = SelectCourse();
+            if (course != null)
+            {
                 Console.WriteLine("Updated Course Name:");
-                courseToUpdate.Name = Console.ReadLine();
+                course.Name = Console.ReadLine();
 
                 Console.WriteLine("Updated Course Code:");
-                courseToUpdate.Code = Console.ReadLine();
+                course.Code = Console.ReadLine();
 
                 string creditsLoop = "on";
                 var newCredits = "notADouble";
@@ -53,33 +49,31 @@ namespace Canvas.helpers {
                 while (creditsLoop == "on") 
                 {
                     if(double.TryParse(newCredits, out double newCreditsDbl)) {
-                        courseToUpdate.Credits = newCreditsDbl;
+                        course.Credits = newCreditsDbl;
                         creditsLoop = "off"; 
-                    } else {
+                    } 
+                    else {
                         Console.WriteLine("Updated Course Credits:");
                         newCredits = Console.ReadLine();
                     }
                 }
 
                 Console.WriteLine("Updated Course Description:");
-                courseToUpdate.Description = Console.ReadLine();
-                
-                Console.WriteLine("Course successfully Updated!");
-                PrintCourse(courseToUpdate);
-            }
+                course.Description = Console.ReadLine();
+                        
+                Console.WriteLine("Course Updated successfully!\n");
+                 PrintCourse(course);
+                Console.WriteLine();      
+            } 
         }
 
         public void DeleteCourse() 
         {
-            PrintCourseList();
-            
-            var choice = Console.ReadLine();
-
-            if(int.TryParse(choice, out int intChoice)) 
+            Course course = SelectCourse();
+            if (course != null)
             {
-                var courseToDelete = CourseService.Current.Courses.ElementAt(intChoice - 1);
-                
-                courseSvc.Delete(courseToDelete);
+                courseSvc.Delete(course);
+                Console.WriteLine("Course Deleted successfully!\n");
             }
         }
 
@@ -91,35 +85,44 @@ namespace Canvas.helpers {
             ); 
         }
 
-         public void SearchCourses() 
+        public void SearchCourses() 
         {
-            Console.WriteLine("Select category to Search:");
-            Console.WriteLine("1, Course Name");
-            Console.WriteLine("2, Course Code");
-            Console.WriteLine("3, Course Description");
-
-            var choice = Console.ReadLine();
-
-            if(int.TryParse(choice, out int intChoice)) 
+            if (courseSvc.Courses.Count() > 0) 
             {
-                if(intChoice == 1)
+                Console.WriteLine("Select category to Search:");
+                Console.WriteLine("1, Course Name");
+                Console.WriteLine("2, Course Code");
+                Console.WriteLine("3, Course Description");
+
+                var choice = Console.ReadLine();
+
+                if(int.TryParse(choice, out int intChoice)) 
                 {
-                    SearchCourseName();
+                    if (intChoice > 0 && intChoice <= 3)
+                    {
+                        if(intChoice == 1)
+                        {
+                            SearchCourseName();
+                        }
+                        if(intChoice == 2)
+                        {
+                            SearchCourseCode();
+                        }
+                        if(intChoice == 3)
+                        {
+                            SearchCourseDescription();
+                        }
+                    }
+                    else {
+                        Console.WriteLine("Error, please select a valid category to Search.\n");
+                    }
+                } else {
+                    Console.WriteLine("Error, please select a valid category to Search.\n");
                 }
-                if(intChoice == 2)
-                {
-                    SearchCourseCode();
-                }
-                if(intChoice == 3)
-                {
-                    SearchCourseDescription();
-                }
-            
-            } else
-            {
-                Console.WriteLine("Error, unable to Search Courses");
             }
-
+            else {
+                Console.WriteLine("Error, please create a Course before Searching.\n");
+            }
         }
 
         public void SearchCourseName() 
@@ -149,24 +152,68 @@ namespace Canvas.helpers {
         public void PrintCourse(Course course)
         {
             Console.WriteLine(course);
-
         }
 
         public void PrintCourseInfo()
         {
-            Console.WriteLine("Select Course:");
-            PrintCourseList();
-            var courseChoice = Console.ReadLine();
-            Course course = null;
-
-            if(int.TryParse(courseChoice, out int courseIntChoice)) 
+            if (courseSvc.Courses.Count() > 0) 
             {
-                course = CourseService.Current.Courses.ElementAt(courseIntChoice - 1);
-            } else {
-                Console.WriteLine("Error: Unable to find Course.");
-            }   
+                Console.WriteLine("Select Course:");
+                PrintCourseList();
+                var choice = Console.ReadLine();
+                Course course = null;
 
-            PrintCourse(course);         
+                if(int.TryParse(choice, out int intChoice)) 
+                {
+                    if (intChoice > 0 && intChoice <= courseSvc.Courses.Count())
+                    {
+                        course = CourseService.Current.Courses.ElementAt(intChoice - 1);
+                        PrintCourse(course); 
+                    } 
+                    else {
+                    Console.WriteLine("Error, please select a valid Course.\n");
+                    }  
+                } 
+                else {
+                    Console.WriteLine("Error, please select a valid Course.\n");
+                }      
+            } 
+            else {
+                Console.WriteLine("Error, please create a Course.\n");
+            }      
+        }
+
+        public Course SelectCourse()
+        {
+            if (courseSvc.Courses.Count() > 0) 
+            {
+                Console.WriteLine("Select Course:");
+                PrintCourseList();
+                
+                var courseChoice = Console.ReadLine();
+                Course course;
+
+                if(int.TryParse(courseChoice, out int courseIntChoice)) 
+                {
+                    if (courseIntChoice > 0 && courseIntChoice <= courseSvc.Courses.Count())
+                    {
+                        course = CourseService.Current.Courses.ElementAt(courseIntChoice - 1);
+                        return course;
+                    }
+                    else {
+                        Console.WriteLine("Error, please select a valid Course.\n");
+                        return null;
+                    }
+                }
+                else {
+                    Console.WriteLine("Error, please select a valid Course.\n");
+                    return null;
+                    }
+            }
+            else {
+                Console.WriteLine("Error, please create a Course.\n");
+                return null;
+            }
         }
     }
 }

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\john_\\repos\\COP 4870\\Canvas\\Canvas.csproj": {}
+    "C:\\Users\\john_\\repos\\COP 4870\\Canvas\\Canvas.csproj": {}
   },
   "projects": {
-    "c:\\Users\\john_\\repos\\COP 4870\\Canvas\\Canvas.csproj": {
+    "C:\\Users\\john_\\repos\\COP 4870\\Canvas\\Canvas.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\john_\\repos\\COP 4870\\Canvas\\Canvas.csproj",
+        "projectUniqueName": "C:\\Users\\john_\\repos\\COP 4870\\Canvas\\Canvas.csproj",
         "projectName": "Canvas",
-        "projectPath": "c:\\Users\\john_\\repos\\COP 4870\\Canvas\\Canvas.csproj",
+        "projectPath": "C:\\Users\\john_\\repos\\COP 4870\\Canvas\\Canvas.csproj",
         "packagesPath": "C:\\Users\\john_\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\john_\\repos\\COP 4870\\Canvas\\obj\\",
+        "outputPath": "C:\\Users\\john_\\repos\\COP 4870\\Canvas\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\john_\\AppData\\Roaming\\NuGet\\NuGet.Config",

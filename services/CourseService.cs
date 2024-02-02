@@ -5,9 +5,10 @@ using Canvas.Models;
 namespace Canvas.Services {
     public class CourseService {
         private static List<Course> courses = new List<Course>();
+        private static List<Assignment> assignments = new List<Assignment>();
         private string? query;
         private static object _lock = new object();
-        private static CourseService instance;
+        private static CourseService? instance;
 
         public static CourseService Current {
             get {
@@ -29,6 +30,14 @@ namespace Canvas.Services {
                         c.Name.ToUpper().Contains(query ?? string.Empty)
                         || c.Code.ToUpper().Contains(query ?? string.Empty));
             }
+        }
+
+        public IEnumerable<Course> GetByAssignment(Guid assignmentId) {
+            return courses.Where(c => c.AssignmentId == assignmentId);
+        }
+
+        public IEnumerable<Course> GetByStudent(Guid studentId) {
+            return courses.Where(c => c.StudentId == studentId);
         }
         
         private CourseService() 
@@ -56,9 +65,19 @@ namespace Canvas.Services {
             courses.Add(course);
         }
 
-        public void Delete(Course courseToDelete)
+        public void AddAssignment(Course course, Assignment assignment) 
         {
-            courses.Remove(courseToDelete);
+            course.Assignments?.Add(assignment);
         }
+
+        public void Delete(Course course)
+        {
+            courses.Remove(course);
+        }
+
+        public void DeleteAssignment(Course course, Assignment assignment)
+        {
+            course.Assignments?.Remove(assignment);
+        }        
     }
 }
