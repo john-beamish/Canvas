@@ -1,7 +1,7 @@
 using System.Text;
 using Canvas.Services;
 
-namespace Canvas.Models {
+namespace Canvas.Models{
     public class Course {
         
         public string? Name{get; set;}

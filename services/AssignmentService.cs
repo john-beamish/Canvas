@@ -3,6 +3,10 @@ using Canvas.Models;
 namespace Canvas.Services {
 
     public class AssignmentService {
+        
+        private CourseService courseSvc = CourseService.Current;
+        private StudentService studentSvc = StudentService.Current;
+        private SubmissionService submissionSvc = SubmissionService.Current;
         private static AssignmentService instance;
         public static AssignmentService Current {
             get {
@@ -45,9 +49,12 @@ namespace Canvas.Services {
             assignments.Add(assignment);
         }
 
-        public void Delete(Assignment assignmentToDelete)
+        public void Delete(Assignment assignment)
         {
-            assignments.Remove(assignmentToDelete);
+            submissionSvc.DeleteAssignment(assignment);
+            courseSvc.DeleteAssignment(assignment.Course, assignment);
+            studentSvc.DeleteSubmission(assignment);
+            assignments.Remove(assignment);
         }
     }
 }

@@ -57,5 +57,15 @@ namespace Canvas.Services {
         {
             submissions.Remove(submission);
         }
+
+        public void DeleteAssignment(Assignment assignment)
+        {
+            foreach (Submission submission in submissions.ToList())
+            {
+                if (submission.AssignmentId == assignment.Id) {
+                    Delete(submission);
+                }
+            }
+        }
     }
 }

@@ -78,6 +78,11 @@ namespace Canvas.Services {
         public void DeleteAssignment(Course course, Assignment assignment)
         {
             course.Assignments?.Remove(assignment);
-        }        
+        }    
+
+        public void DeleteStudent(Course course, Student student)  
+        {
+            course.Roster?.Remove(student);
+        }  
     }
 }

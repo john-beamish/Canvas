@@ -12,56 +12,16 @@ namespace Canvas.helpers
         {   
             Console.WriteLine("Student Name:");
             var nameChoice = Console.ReadLine();
+            
+            Student student = new Student{Name = nameChoice}; 
+            studentSvc.Add(student); 
+            
+            student.Year = GetStudentYear();
 
-            Console.WriteLine("Student Year:");
-            Console.WriteLine("1: Freshman");
-            Console.WriteLine("2: Sophomore");
-            Console.WriteLine("3: Junior");
-            Console.WriteLine("4: Senior");
-            Console.WriteLine("5: Graduate Student");
-
-            string? yearChoice = Console.ReadLine();
-
-            if (int.TryParse(yearChoice, out int intChoice))
+            if (student.Year != null)
             {
-                if (intChoice > 0 && intChoice <= 5) {
-                    var year = "Freshman";
-
-                    switch(yearChoice) 
-                    {
-                        case "1": 
-                            year = "Freshman";
-                        break;
-
-                        case "2": 
-                            year = "Sophomore";
-                        break;
-
-                        case "3": 
-                            year = "Junior";
-                        break;
-
-                        case "4": 
-                            year = "Senior";
-                        break;
-
-                        case "5": 
-                            year = "Graduate Student";
-                        break;
-                    } 
-
-                    Student myStudent = new Student{Name = nameChoice, Year = year}; 
-                    studentSvc.Add(myStudent); 
-                    
-                    Console.WriteLine("Student created successfully!\n");
-                    PrintStudent(myStudent);
-                }
-                else {
-                    Console.WriteLine("Error: Please select a valid Student Year\n");
-                }
-            } 
-            else {
-                Console.WriteLine("Error: Please select a valid Student Year\n");
+                Console.WriteLine("Student created successfully!\n");
+                PrintStudent(student);
             }
         }
 
@@ -82,44 +42,64 @@ namespace Canvas.helpers
         {
             Student student = SelectStudent();
 
-            if (student != null)
+            if (student == null)
             {
-                Course course = SelectCourse();
-
-                if (course != null)
-                {
-                    if (course.Roster == null){
-                        course.Roster = new List<Student>();
-                    }
-                                
-                    course.Roster.Add(student);
-
-                    if (student?.Schedule == null){
-                        student.Schedule = new List<Course>();
-                    }
-                    
-                    student?.Schedule?.Add(course);
-                    
-                    Console.WriteLine($"{student?.Name} successfully Enrolled in {course.Name}\n");
-                }
+                return;
             }
+
+            Course course = SelectCourse();
+
+            if (course == null)
+            {
+                return;
+            }
+                   
+            if (student?.Schedule?.Count > 0) 
+            {
+                foreach (Course enrolledCourse in student.Schedule.ToList())
+                {
+                    if (enrolledCourse.Id == course.Id) 
+                    {
+                        Console.WriteLine($"Error: {student.Name} is already Enrolled in {enrolledCourse.Name}.\n");
+                        return;
+                    }
+                }
+            }      
+                      
+            if (course.Roster == null){
+                course.Roster = new List<Student>();
+            }
+                                        
+            course.Roster.Add(student);
+
+            if (student?.Schedule == null){
+                student.Schedule = new List<Course>();
+            }
+                            
+            student?.Schedule?.Add(course);
+            Console.WriteLine($"{student?.Name} successfully Enrolled in {course.Name}.\n");
         }
 
         public void RemoveStudent()
         {
             Student student = SelectStudent();
 
-            if (student != null)
+            if (student == null)
             {
-                Course course = SelectStudentCourse(student);
-
-                if (course != null)
-                {
-                    course.Roster?.Remove(student);
-                    student.Schedule?.Remove(course);
-                    Console.WriteLine($"{student.Name} successfully Removed from {course.Name}\n");
-                }
+                return;
             }
+            
+            Course course = SelectStudentCourse(student);
+
+            if (course == null)
+            {
+                return;
+            }
+                    
+            course.Roster?.Remove(student);
+            student.Schedule?.Remove(course);
+            
+            Console.WriteLine($"{student.Name} successfully Removed from {course.Name}\n");
         }
 
         public void SearchStudents()
@@ -134,48 +114,53 @@ namespace Canvas.helpers
         {   
             Student student = SelectStudent();
 
-            if (student != null)
+            if (student == null)
             {
-                PrintStudent(student); 
+                return;
             }
+                
+            PrintStudent(student);
         }
 
         public void DeleteStudent() 
         {
             Student student = SelectStudent();
 
-            if (student != null)
+            if (student == null)
             {
-                studentSvc.Delete(student);
-                Console.WriteLine("Student successfully Deleted.\n");
+                return;
             }
+                
+            studentSvc.Delete(student);
+            Console.WriteLine("Student successfully Deleted.\n");
         }
 
         public void UpdateStudent() 
         {
             Student student = SelectStudent();
 
-            if (student != null)
+            if (student == null)
             {
-                string savedStudentName = student.Name;
-                string savedStudentYear = student.Year;
-                
-                Console.WriteLine("Updated Student Name:");
-                student.Name = Console.ReadLine();
-
-                student.Year = GetStudentYear();
-
-                if (student.Year != null) 
-                {
-                    Console.WriteLine("Student successfully Updated!\n");
-                    PrintStudent(student);
-                }
-                else {
-                    student.Name = savedStudentName;
-                    student.Year = savedStudentYear;
-                    Console.WriteLine("Student not updated. Please try again.\n");
-                }
+                Console.WriteLine("Student not updated. Please try again.\n");
+                return;
             }
+                
+            Console.WriteLine("Updated Student Name:");
+            var name = Console.ReadLine();
+
+            var year = GetStudentYear();
+
+            if (year == null) 
+            {
+                Console.WriteLine("Student not updated. Please try again.\n");
+                return;
+            }
+            
+            student.Name = name;
+            student.Year = year;
+
+            Console.WriteLine("Student successfully Updated!\n");
+            PrintStudent(student);
         }
         
         public void PrintCourseList()
@@ -207,34 +192,31 @@ namespace Canvas.helpers
 
         public Student SelectStudent()
         {
-            if (studentSvc.Students.Count() > 0) 
+            if (studentSvc.Students.Count() <= 0) 
             {
-                Console.WriteLine("Select Student:");
-                PrintStudentList();
-                var studentChoice = Console.ReadLine();
-                
-                if (int.TryParse(studentChoice, out int studentIntChoice)) 
-                {
-                    if (studentIntChoice > 0 && studentIntChoice <= studentSvc.Students.Count())
-                    {
-                        Student student;
-                        student = StudentService.Current.Students.ElementAt(studentIntChoice - 1);
-                        return student;
-                    } 
-                    else {
-                        Console.WriteLine("Error: Please select a valid Student.\n");
-                        return null;
-                    }
-                } 
-                else {
-                    Console.WriteLine("Error: Please select a valid Student.\n");
-                    return null;
-                }   
-            }
-            else {
                 Console.WriteLine("Error, please create a Student.\n");
                 return null;
             }
+                
+            Console.WriteLine("Select Student:");
+            PrintStudentList();
+            var studentChoice = Console.ReadLine();
+                
+            if (int.TryParse(studentChoice, out int studentIntChoice) == false) 
+            {
+                Console.WriteLine("Error: Please select a valid Student.\n");
+                return null;
+            }
+            
+            if (studentIntChoice <= 0 || studentIntChoice > studentSvc.Students.Count())
+            {
+                Console.WriteLine("Error: Please select a valid Student.\n");
+                return null;
+            }
+                
+            Student student = StudentService.Current.Students.ElementAt(studentIntChoice - 1);
+            
+            return student;  
         }
 
         public Course SelectCourse()
@@ -243,30 +225,27 @@ namespace Canvas.helpers
             PrintCourseList();
             var courseChoice = Console.ReadLine();
 
-            if (courseSvc.Courses.Count() > 0)
+            if (courseSvc.Courses.Count() <= 0)
             {
-                if (int.TryParse(courseChoice, out int courseIntChoice)) 
-                {
-                    if (courseIntChoice > 0 && courseIntChoice <= courseSvc.Courses.Count())
-                    {
-                        var course = CourseService.Current.Courses.ElementAt(courseIntChoice - 1);
-                        
-                        return course;
-                    } 
-                    else {
-                        Console.WriteLine("Error: Please select a valid Course.\n");
-                        return null;
-                    }
-                }  
-                else {
-                    Console.WriteLine("Error: Please select a valid Course.\n");
-                    return null;
-                }   
-            }
-            else {
                 Console.WriteLine("Error, please create a Course.\n");
                 return null;
             }
+        
+            if (int.TryParse(courseChoice, out int courseIntChoice) == false) 
+            {
+                Console.WriteLine("Error: Please select a valid Course.\n");
+                return null;
+            }
+                    
+            if (courseIntChoice <= 0 || courseIntChoice > courseSvc.Courses.Count())
+            {
+                Console.WriteLine("Error: Please select a valid Course.\n");
+                return null;
+            }
+                        
+            Course course = CourseService.Current.Courses.ElementAt(courseIntChoice - 1);
+                        
+            return course;
         }
 
         public Course SelectStudentCourse(Student student)
@@ -275,30 +254,27 @@ namespace Canvas.helpers
             PrintStudentCourseList(student);  // Only print Courses the Student is enrolled in. 
             var courseChoice = Console.ReadLine();
 
-            if (student.Schedule?.Count() > 0)
+            if (student.Schedule?.Count() <= 0)
             {
-                if (int.TryParse(courseChoice, out int courseIntChoice)) 
-                {
-                    if (courseIntChoice > 0 && courseIntChoice <= student.Schedule.Count())
-                    {
-                        var course = CourseService.Current.Courses.ElementAt(courseIntChoice - 1);
-                        
-                        return course;
-                    } 
-                    else {
-                        Console.WriteLine("Error: Please select a valid Course.\n");
-                        return null;
-                    }
-                }  
-                else {
-                    Console.WriteLine("Error: Please select a valid Course.\n");
-                    return null;
-                }   
-            }
-            else {
                 Console.WriteLine("Error, Student must be Enrolled in a Course.\n");
                 return null;
             }
+
+            if (int.TryParse(courseChoice, out int courseIntChoice) == false) 
+            {
+                Console.WriteLine("Error: Please select a valid Course.\n");
+                return null;
+            }
+            
+            if (courseIntChoice <= 0 || courseIntChoice > student.Schedule.Count())
+            {
+                Console.WriteLine("Error: Please select a valid Course.\n");
+                return null;
+            }
+            
+            Course course = CourseService.Current.Courses.ElementAt(courseIntChoice - 1);
+                        
+            return course;
         }
         public string GetStudentYear()
         {
@@ -311,46 +287,46 @@ namespace Canvas.helpers
 
             string? yearChoice = Console.ReadLine();
                         
-            if (int.TryParse(yearChoice, out int yearIntChoice))
+            if (int.TryParse(yearChoice, out int yearIntChoice) == false)
             {
-                if (yearIntChoice > 0 && yearIntChoice <= 5) 
-                {
-                    var year = "Freshman";
-
-                    switch(yearChoice) 
-                    {
-                        case "1": 
-                            year = "Freshman";
-                            break;
-
-                        case "2": 
-                            year = "Sophomore";
-                        break;
-
-                        case "3": 
-                            year = "Junior";
-                        break;
-
-                        case "4": 
-                            year = "Senior";
-                        break;
-
-                        case "5": 
-                            year = "Graduate Student";
-                        break;
-
-                    }
-                    return year;
-                }
-                else {
-                    Console.WriteLine("Error, please select a valid Year.\n");
-                    return null;
-                }
-            }
-            else {
                 Console.WriteLine("Error, please select a valid Year.\n");
                 return null;
             }
+
+            int maxYear = 5;
+
+            if (yearIntChoice <= 0 || yearIntChoice > maxYear) 
+            {
+                Console.WriteLine("Error, please select a valid Year.\n");
+                return null;
+            }
+
+            var year = "Freshman";
+
+            switch(yearChoice) 
+            {
+                case "1": 
+                    year = "Freshman";
+                    break;
+
+                case "2": 
+                    year = "Sophomore";
+                break;
+
+                case "3": 
+                    year = "Junior";
+                break;
+
+                case "4": 
+                    year = "Senior";
+                break;
+
+                case "5": 
+                    year = "Graduate Student";
+                break;
+            }
+                    
+            return year;
         }
     }   
 }

@@ -5,6 +5,7 @@ namespace Canvas.Models {
         public string? Name {get; set;}
         public double? Grade {get; set;}
         public string? Description {get; set;}
+        public DateTime? Date {get; set;}
         public Student? Student {get; set;}
         public Assignment? Assignment {get; set;}
         public Guid Id {get;}
@@ -20,7 +21,9 @@ namespace Canvas.Models {
         public override string ToString()
         {   
             return 
-                $"Submission: {Name} - Course: {Assignment?.Course?.Name} - Assignment: {Assignment?.Name} - Student: {Student?.Name} - Grade: {Grade} / {Assignment?.AvailablePoints}\n" +
+                $"Submission: {Name} - Course: {Assignment?.Course?.Name} - Assignment: {Assignment?.Name} - Student: {Student?.Name}\n" +
+                $"Grade: {Grade} / {Assignment?.AvailablePoints}\n" +
+                $"Date Submitted: {Date} - (Due Date: {Assignment?.DueDate.ToString()})\n" +
                 $"Description: {Description}\n";
         }
     }

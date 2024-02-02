@@ -119,11 +119,19 @@ internal class Program
                     if(assignmentChoice?.ToUpper() == "S" ) 
                     {
                         Console.WriteLine("N. New Submission");
+                        Console.WriteLine("D. Delete Submission");
+                        Console.WriteLine("U. Update Submission");
 
                         string? submissionChoice = Console.ReadLine();
 
                         if(submissionChoice?.ToUpper() == "N" ) {
                             SubmissionHlpr.NewSubmission();
+                        }
+                        if(submissionChoice?.ToUpper() == "D" ) {
+                            SubmissionHlpr.DeleteSubmission();
+                        }
+                        if(submissionChoice?.ToUpper() == "U" ) {
+                            SubmissionHlpr.Update();
                         }
                     }
                 break;
