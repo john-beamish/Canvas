@@ -1,0 +1,14 @@
+C:\Users\john_\repos\COP 4870\Canvas\bin\Debug\net7.0\Canvas.exe
+C:\Users\john_\repos\COP 4870\Canvas\bin\Debug\net7.0\Canvas.deps.json
+C:\Users\john_\repos\COP 4870\Canvas\bin\Debug\net7.0\Canvas.runtimeconfig.json
+C:\Users\john_\repos\COP 4870\Canvas\bin\Debug\net7.0\Canvas.dll
+C:\Users\john_\repos\COP 4870\Canvas\bin\Debug\net7.0\Canvas.pdb
+C:\Users\john_\repos\COP 4870\Canvas\obj\Debug\net7.0\Canvas.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\john_\repos\COP 4870\Canvas\obj\Debug\net7.0\Canvas.AssemblyInfoInputs.cache
+C:\Users\john_\repos\COP 4870\Canvas\obj\Debug\net7.0\Canvas.AssemblyInfo.cs
+C:\Users\john_\repos\COP 4870\Canvas\obj\Debug\net7.0\Canvas.csproj.CoreCompileInputs.cache
+C:\Users\john_\repos\COP 4870\Canvas\obj\Debug\net7.0\Canvas.dll
+C:\Users\john_\repos\COP 4870\Canvas\obj\Debug\net7.0\refint\Canvas.dll
+C:\Users\john_\repos\COP 4870\Canvas\obj\Debug\net7.0\Canvas.pdb
+C:\Users\john_\repos\COP 4870\Canvas\obj\Debug\net7.0\Canvas.genruntimeconfig.cache
+C:\Users\john_\repos\COP 4870\Canvas\obj\Debug\net7.0\ref\Canvas.dll
