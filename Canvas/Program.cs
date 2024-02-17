@@ -11,15 +11,16 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        string menu = "on";
+        bool menuOn = true;
 
-        while (menu == "on") 
+        while (menuOn == true) 
         {
             Console.WriteLine("Welcome to Canvas!");
-            Console.WriteLine("C. Courses");
-            Console.WriteLine("S. Students");
-            Console.WriteLine("A. Assignments");
-            Console.WriteLine("E. Exit Canvas");
+            Console.WriteLine("1. Courses");
+            Console.WriteLine("2. Students");
+            Console.WriteLine("3. Assignments");
+            Console.WriteLine("4. Submissions");
+            Console.WriteLine("5. Exit Canvas");
 
             string? mainChoice = Console.ReadLine();
             var courseHlpr = new CourseHelper();
@@ -28,8 +29,7 @@ internal class Program
             var SubmissionHlpr = new SubmissionHelper();
 
             switch(mainChoice) {
-                case "C":
-                case "c":
+                case "1":
                     Console.WriteLine("N. New Course");
                     Console.WriteLine("D. Delete Course");
                     Console.WriteLine("I: Course Info");
@@ -46,10 +46,6 @@ internal class Program
                         courseHlpr.DeleteCourse();
                     }       
 
-                    if(courseChoice?.ToUpper() == "E" ) {
-                        menu = "off";
-                    }
-
                     if(courseChoice?.ToUpper() == "I" ) {
                         courseHlpr.PrintCourseInfo();
                     }     
@@ -63,8 +59,7 @@ internal class Program
                         }        
                 break;
 
-                case "S":
-                case "s":
+                case "2":
                     Console.WriteLine("N. New Student");
                     Console.WriteLine("D. Delete Student");
                     Console.WriteLine("E. Enroll Student in Course");
@@ -98,12 +93,12 @@ internal class Program
                     }  
                 break;
 
-                case "A":
-                case "a":
+                case "3":
                     Console.WriteLine("N. New Assignment");
                     Console.WriteLine("D. Delete Assignment");
                     Console.WriteLine("I. Assignment Info");
-                    Console.WriteLine("S. Submissions");
+                    Console.WriteLine("S. Search Assignments");
+                    Console.WriteLine("U. Update Assignment");
 
                     string? assignmentChoice = Console.ReadLine();
 
@@ -116,29 +111,38 @@ internal class Program
                     if(assignmentChoice?.ToUpper() == "I" ) {
                         assignmentHlpr.PrintAssignmentInfo();
                     }
-                    if(assignmentChoice?.ToUpper() == "S" ) 
-                    {
-                        Console.WriteLine("N. New Submission");
-                        Console.WriteLine("D. Delete Submission");
-                        Console.WriteLine("U. Update Submission");
-
-                        string? submissionChoice = Console.ReadLine();
-
-                        if(submissionChoice?.ToUpper() == "N" ) {
-                            SubmissionHlpr.NewSubmission();
-                        }
-                        if(submissionChoice?.ToUpper() == "D" ) {
-                            SubmissionHlpr.DeleteSubmission();
-                        }
-                        if(submissionChoice?.ToUpper() == "U" ) {
-                            SubmissionHlpr.Update();
-                        }
+                    if(assignmentChoice?.ToUpper() == "S" ) {
+                        assignmentHlpr.SearchAssignments();
+                    }
+                    if(assignmentChoice?.ToUpper() == "U" ) {
+                        assignmentHlpr.Update();
                     }
                 break;
 
-                case "E":
-                case "e":
-                    menu = "off";
+                case "4":
+                    Console.WriteLine("N. New Submission");
+                    Console.WriteLine("D. Delete Submission");
+                    Console.WriteLine("S. Search Submissions");
+                    Console.WriteLine("U. Update Submission");
+
+                    string? submissionChoice = Console.ReadLine();
+
+                    if(submissionChoice?.ToUpper() == "N" ) {
+                            SubmissionHlpr.NewSubmission();
+                    }
+                    if(submissionChoice?.ToUpper() == "D" ) {
+                        SubmissionHlpr.DeleteSubmission();
+                    }
+                    if(submissionChoice?.ToUpper() == "S" ) {
+                        SubmissionHlpr.Search();
+                    }
+                    if(submissionChoice?.ToUpper() == "U" ) {
+                        SubmissionHlpr.Update();
+                    }
+                break;
+
+                case "5":
+                    menuOn = false;
                 break;
             }   
         }

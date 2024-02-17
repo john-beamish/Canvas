@@ -25,10 +25,7 @@ namespace Canvas.Services {
         public IEnumerable<Course> Courses 
         {
             get {
-                return courses.Where(
-                    c => 
-                        c.Name.ToUpper().Contains(query ?? string.Empty)
-                        || c.Code.ToUpper().Contains(query ?? string.Empty));
+                return courses;
             }
         }
 

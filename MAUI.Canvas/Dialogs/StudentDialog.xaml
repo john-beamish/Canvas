@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MAUI.Canvas.Dialogs.StudentDialog"
+             Title="StudentDialog"
+             NavigatedTo="ContentPage_NavigatedTo">
+    <VerticalStackLayout>
+        <Label 
+            Text="New Student"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Text="Name" Grid.Column="0" Grid.Row="0"/>
+            <Entry Text="{Binding Name}" Grid.Column="1" Grid.Row="0"/>
+        </Grid>
+        <StackLayout>
+            <Label Text="Year"/>
+            <Button Text="Freshman" Clicked="Freshman_Clicked" Style="{StaticResource CommonButtonStyle}"/>
+            <Button Text="Sophomore" Clicked="Sophomore_Clicked" Style="{StaticResource CommonButtonStyle}"/>
+            <Button Text="Junior" Clicked="Junior_Clicked" Style="{StaticResource CommonButtonStyle}"/>
+            <Button Text="Senior" Clicked="Senior_Clicked" Style="{StaticResource CommonButtonStyle}"/>
+            <Button Text="Graduate Student" Clicked="Grad_Student_Clicked" Style="{StaticResource CommonButtonStyle}"/>
+
+            <BoxView HeightRequest="40" BackgroundColor="White" />
+      
+            <Button Text="Ok" Clicked="Ok_Clicked" Style="{StaticResource CommonButtonStyle}"/>
+            <Button Text="Cancel" Clicked="Cancel_Clicked" Style="{StaticResource CommonButtonStyle}"/>
+        </StackLayout>
+    </VerticalStackLayout>
+</ContentPage>

@@ -254,7 +254,7 @@ namespace Canvas.helpers
             PrintStudentCourseList(student);  // Only print Courses the Student is enrolled in. 
             var courseChoice = Console.ReadLine();
 
-            if (student.Schedule == null)
+            if (student.Schedule?.Count() <= 0)
             {
                 Console.WriteLine("Error, Student must be Enrolled in a Course.\n");
                 return null;

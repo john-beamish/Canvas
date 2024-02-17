@@ -33,19 +33,44 @@ namespace Canvas.Services {
             submissions = new List<Submission>();
         }
 
-        public static IEnumerable<Submission> SearchSubmissionAssignment(string query) 
+        public static IEnumerable<Submission> SearchName(string query) 
+        {
+            return submissions.Where(s => s.Name.ToUpper().Contains(query.ToUpper()));
+        }
+
+        public static IEnumerable<Submission> SearchAssignment(string query) 
         {
             return submissions.Where(s => s.Assignment.Name.ToUpper().Contains(query.ToUpper()));
         }
 
-        public static IEnumerable<Submission> SearchSubmissionStudent(string query) 
+        public static IEnumerable<Submission> SearchStudent(string query) 
         {
             return submissions.Where(s => s.Student.Name.ToUpper().Contains(query.ToUpper()));
         }
 
-        public static IEnumerable<Submission> SearchSubmissionDescription(string query) 
+        public static IEnumerable<Submission> SearchCourse(string query) 
+        {
+            return submissions.Where(s => s.Assignment.Course.Name.ToUpper().Contains(query.ToUpper()));
+        }
+
+        public static IEnumerable<Submission> SearchGrade(double query) 
+        {
+            return submissions.Where(s => s.Grade == query);
+        }
+
+        public static IEnumerable<Submission> SearchDescription(string query) 
         {
             return submissions.Where(s => s.Description.ToUpper().Contains(query.ToUpper()));
+        }
+
+        public static IEnumerable<Submission> SearchDueDate(DateTime query) 
+        {
+            return submissions.Where(s => s.Assignment.DueDate == query);
+        }
+
+        public static IEnumerable<Submission> SearchSubmissionDate(DateTime query) 
+        {
+            return submissions.Where(s => s.Date == query);
         }
         
         public void Add(Submission submission) 

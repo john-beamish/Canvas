@@ -101,6 +101,145 @@ namespace Canvas.helpers
             }
         }
 
+        public void Search() 
+        {
+            if (submissionSvc.Submissions.Count() <= 0) 
+            {
+                Console.WriteLine("Error, please create a Submission before Searching.\n");
+                return;
+            }
+            
+            Console.WriteLine("Select parameter to Search:");
+            Console.WriteLine("1. Name");
+            Console.WriteLine("2. Grade");
+            Console.WriteLine("3. Description");
+            Console.WriteLine("4. Course");
+            Console.WriteLine("5. Assignment");
+            Console.WriteLine("6. Due Date");
+            Console.WriteLine("7. Submission Date");
+
+            var choice = Console.ReadLine();
+
+            if(int.TryParse(choice, out int intChoice) == false) 
+            {
+                Console.WriteLine("Error, please select a valid parameter to Search.\n");
+                return;
+            }
+
+            int parameterCount = 7;
+
+            if (intChoice <= 0 || intChoice > parameterCount)
+            {
+                Console.WriteLine("Error, please select a valid parameter to Search.\n");
+                return;
+            }
+                        
+            if(intChoice == 1)
+            {
+                SearchName();
+            }
+            if(intChoice == 2)
+            {
+                SearchGrade();
+            }
+            if(intChoice == 3)
+            {
+                SearchDesciption();
+            }
+            if(intChoice == 4)
+            {
+                SearchCourse();
+            }
+            if(intChoice == 5)
+            {
+                SearchAssignment();
+            }
+            if(intChoice == 6)
+            {
+                SearchDueDate();
+            }
+            if(intChoice == 7)
+            {
+                SearchSubmissionDate();
+            }
+        }
+
+        public void SearchName() 
+        {
+            Console.WriteLine("Enter a query:");
+            var query = Console.ReadLine() ?? string.Empty;
+
+            SubmissionService.SearchName(query).ToList().ForEach(Console.WriteLine);
+        }
+
+        public void SearchGrade() 
+        {
+            Console.WriteLine("Enter a Grade to Search:");
+            var query = Console.ReadLine() ?? string.Empty;
+
+            if (double.TryParse(query, out double gradeQuery) == false)
+            {
+                Console.WriteLine("Error: Please enter a valid number for Grade.\n");
+                return;
+            }
+
+            SubmissionService.SearchGrade(gradeQuery).ToList().ForEach(Console.WriteLine);
+        }
+
+        public void SearchDesciption() 
+        {
+            Console.WriteLine("Enter a query:");
+            var query = Console.ReadLine() ?? string.Empty;
+
+            SubmissionService.SearchDescription(query).ToList().ForEach(Console.WriteLine);
+        }
+
+        public void SearchCourse() 
+        {
+            Console.WriteLine("Enter a query:");
+            var query = Console.ReadLine() ?? string.Empty;
+
+            SubmissionService.SearchCourse(query).ToList().ForEach(Console.WriteLine);
+        }
+
+        public void SearchAssignment() 
+        {
+            Console.WriteLine("Enter a query:");
+            var query = Console.ReadLine() ?? string.Empty;
+
+            SubmissionService.SearchAssignment(query).ToList().ForEach(Console.WriteLine);
+        }
+
+        public void SearchDueDate() 
+        {
+            Console.WriteLine("Enter a query (MM-DD-YYYY):");
+            var query = Console.ReadLine() ?? string.Empty;
+
+            if (DateTime.TryParse(query, out DateTime dateQuery) == false)
+            {
+                Console.WriteLine("Error: Please enter a Date (MM-DD-YYYY).\n");
+                return;
+            }
+
+            SubmissionService.SearchDueDate(dateQuery).ToList().ForEach(Console.WriteLine);
+        }
+
+        public void SearchSubmissionDate() 
+        {
+            Console.WriteLine("Enter a query (MM-DD-YYYY):");
+            var query = Console.ReadLine() ?? string.Empty;
+
+            if (DateTime.TryParse(query, out DateTime dateQuery) == false)
+            {
+                Console.WriteLine("Error: Please enter a Date (MM-DD-YYYY).\n");
+                return;
+            }
+
+            SubmissionService.SearchSubmissionDate(dateQuery).ToList().ForEach(Console.WriteLine);
+        }
+
+
+
         public void Update() 
         {
             Submission submission = SelectSubmission();
@@ -275,17 +414,16 @@ namespace Canvas.helpers
 
         public void PrintSchedule(Student student)
         {
-            if (student.Schedule == null) 
+            if (student.Schedule != null) 
             {
+                int courseCount = 0;
+                foreach (Course course in student.Schedule)
+                {
+                    Console.WriteLine($"{++courseCount}, {course.Name}");
+                }
+            } else {
                 Console.WriteLine("Error, Student Schedule is empty.\n");
-                return;
             }
-            
-            int courseCount = 0;
-            foreach (Course course in student.Schedule)
-            {
-                Console.WriteLine($"{++courseCount}, {course.Name}");
-            } 
         }
 
         public Course SelectCourse(Student student)

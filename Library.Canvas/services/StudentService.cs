@@ -27,16 +27,19 @@ namespace Canvas.Services {
             }
         }
         private StudentService() {
-            students = new List<Student>();
+            students = new List<Student>()
+            {
+                new Student { Name = "TestStudent 1"},
+                new Student { Name = "TestStudent 2" },
+                new Student { Name = "TestStudent 3" },
+                new Student { Name = "TestStudent 4" },
+                new Student { Name = "TestStudent 5" },
+            };
         }
 
         public static IEnumerable<Student> Search(string query) 
         {
             return students.Where(s => s.Name.ToUpper().Contains(query.ToUpper()));
-        }
-
-        public IEnumerable<Student> GetByCourse(Guid courseId) {
-            return students.Where(s => s.CourseId == courseId);
         }
 
         public void Add(Student student)

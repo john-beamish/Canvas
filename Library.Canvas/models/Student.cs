@@ -8,10 +8,6 @@ namespace Canvas.Models {
         public List<Course>? Schedule{get; set;}
         public List<Submission>? Submissions{get; set;}
         public Guid Id {get;}
-        public Guid CourseId {get; set;}
-        public Guid SubmissionId {get; set;}
-        // public Guid ContentItemId {get; set;}
-        // public Guid ModuleId {get; set;}
 
         public Student()
         {
@@ -57,7 +53,7 @@ namespace Canvas.Models {
                 }
                 foreach (Submission submission in Submissions)
                 {
-                    submissionString.AppendLine($"    {submission.Name} - Assignment: {submission.Assignment?.Name} - Student: {submission.Student?.Name} - Grade: {submission.Grade} / {submission.Assignment?.AvailablePoints}\n");
+                    submissionString.AppendLine($"    {submission.Name} - Course: {submission?.Assignment?.Course} - Assignment: {submission?.Assignment?.Name} - Student: {submission?.Student?.Name} - Grade: {submission?.Grade} / {submission?.Assignment?.AvailablePoints}\n");
                 }
 
                 return 
